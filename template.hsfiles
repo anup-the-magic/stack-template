@@ -1,0 +1,227 @@
+{-# START_FILE package.yaml #-}
+name:                {{name}}
+version:             0.1.0.0
+github:              "{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}"
+license:             MIT
+author:              "{{author-name}}{{^author-name}}Author name here{{/author-name}}"
+maintainer:          "{{author-email}}{{^author-email}}example@example.com{{/author-email}}"
+copyright:           "{{copyright}}{{^copyright}}{{year}}{{^year}}2022{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}{{/copyright}}"
+
+extra-source-files:
+- README.md
+- CHANGELOG.md
+
+# Metadata used when publishing your package
+# synopsis: Short description of your package
+# category: {{category}}{{^category}}Application{{/category}}
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description: >
+  Please see the README on GitHub at
+  <https://github.com/{{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}#readme>
+
+dependencies:
+  - base >= 4.7 && < 5
+  - containers
+  - text
+
+default-extensions:
+  # Recommended via https://lexi-lambda.github.io/blog/2018/02/10/an-opinionated-guide-to-haskell-in-2018
+  # Or me
+
+  - OverloadedStrings
+  - DataKinds
+  - FlexibleContexts
+
+  - DeriveAnyClass
+  - DerivingVia
+  - DefaultSignatures
+  - DuplicateRecordFields
+  - OverloadedRecordDot
+
+  # Covered by GHC2021
+  - ConstraintKinds
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveTraversable
+  - DoAndIfThenElse
+  - EmptyCase
+  - EmptyDataDecls
+  - EmptyDataDeriving
+  - ExistentialQuantification
+  - ExplicitForAll
+  - GADTSyntax
+  - GeneralizedNewtypeDeriving
+  - ImportQualifiedPost
+  - InstanceSigs
+  - MultiParamTypeClasses
+  - NamedFieldPuns
+  - NumericUnderscores
+  - PostfixOperators
+  - RankNTypes
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
+  - TypeApplications
+  - TypeOperators
+  - TypeSynonymInstances
+
+_dev:
+  dependencies: &dev-dependencies
+    ormolu:
+    hlint:
+
+_base-exe: &base-exe
+  main: Main.hs
+  dependencies:
+    - {{name}}
+  ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+
+library:
+  source-dirs: src
+
+executables:
+  {{name}}-exe:
+    <<: *base-exe
+    source-dirs: app
+
+tests:
+  {{name}}-test:
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    main: Spec.hs
+    source-dirs: test
+
+{-# START_FILE stack.yaml #-}
+# periodically fix
+resolver: lts-19.16
+# must be at least 9.2.0, best if same as lts
+compiler: ghc-9.2.2
+# compiler-check: match-minor
+ghc-options:
+  '$everything': -haddock
+
+{-# START_FILE fourmolu.yaml #-}
+indentation: 4
+# for lists, tuples etc. - can also be 'trailing'
+comma-style: leading
+# rec {x = 1} vs. rec{x = 1}
+record-brace-space: false
+# 'false' means save space by only half-indenting the 'where' keyword
+indent-wheres: false
+# 'false' uses Ormolu-style lists
+diff-friendly-import-export: true
+# don't be too opinionated about newlines etc.
+respectful: true
+# '--' vs. '{-'
+haddock-style: multi-line
+# number of newlines between top-level declarations
+newlines-between-decls: 1
+
+{-# START_FILE Setup.hs #-}
+-- You can largely ignore this file, unless you're doing special preprocessing a la proto-lens
+import Distribution.Simple
+
+main = defaultMain
+
+{-# START_FILE test/Spec.hs #-}
+main :: IO ()
+main = putStrLn "Test suite not yet implemented"
+
+{-# START_FILE src/Lib.hs #-}
+module Lib
+    ( someFunc
+    ) where
+
+someFunc :: IO ()
+someFunc = putStrLn "someFunc"
+
+{-# START_FILE app/Main.hs #-}
+module Main where
+
+import Lib
+
+main :: IO ()
+main = someFunc
+
+{-# START_FILE README.md #-}
+# {{name}}
+
+{-# START_FILE CHANGELOG.md #-}
+# CHANGELOG for {{name}}
+
+## Versioning
+
+All notable changes to this project will be documented in this file.
+
+This project conforms to [Haskell Package Versioning Policy](https://pvp.haskell.org/) in the following manner:
+- Versions will be of the format `A.B.C.D`
+- `A` will be incremented on *significant or breaking* changes to behavior or logic
+- `B` will be incremented on *breaking* changes of any kind
+- `C` will be incremented on *minor* changes, including non-breaking feature addition
+- `D` will be incremented for *hotfixes* that must be incorporated to ensure existing functionality
+
+## Unreleased
+
+### 0.1.0.0 - YYYY-MM-DD
+
+## Released
+
+
+{-# START_FILE LICENSE #-}
+MIT License
+
+Copyright (c) {{year}}{{^year}}2022{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+{-# START_FILE .gitignore #-}
+# from github/gitignore -- Haskell.gitignore
+dist
+dist-*
+cabal-dev
+*.o
+*.hi
+*.hie
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
+.HTF/
+.ghc.environment.*
+*~
