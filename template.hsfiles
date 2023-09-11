@@ -102,9 +102,10 @@ tests:
 
 {-# START_FILE stack.yaml #-}
 # periodically fix
-resolver: lts-19.16
+resolver: lts-21.11
 # must be at least 9.2.0, best if same as lts
-compiler: ghc-9.2.2
+# use system GHC since GHCup
+system-ghc: true
 # compiler-check: match-minor
 ghc-options:
   '$everything': -haddock
